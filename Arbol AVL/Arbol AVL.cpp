@@ -188,6 +188,64 @@ public:
         cout << endl;
     }
 
+
+
+    void mostrarArbolConRamas() {
+        if (!raiz) {
+            cout << "El árbol está vacío." << endl;
+            return;
+        }
+
+        queue<NodoAVL*> q;
+        q.push(raiz);
+        int nivel = 0;
+        int maxNivel = altura(raiz);
+        int ancho = pow(2, maxNivel + 1);
+
+        while (!q.empty()) {
+            int cantidad = q.size();
+            int espacio = ancho / pow(2, nivel + 1);
+
+            for (int i = 0; i < cantidad; ++i) {
+                NodoAVL* temp = q.front();
+                q.pop();
+
+                cout << setw(espacio) << "";
+                if (temp) {
+                    cout << temp->dato;
+                    q.push(temp->izq);
+                    q.push(temp->der);
+                }
+                else {
+                    cout << " ";
+                    q.push(nullptr);
+                    q.push(nullptr);
+                }
+                cout << setw(espacio) << "";
+            }
+            cout << "\n";
+
+
+            if (nivel < maxNivel - 1) {
+                for (int j = 0; j < cantidad; ++j) {
+                    cout << setw(espacio - 1) << "";
+                    cout << (j % 2 == 0 ? "/" : "\\");
+                    cout << setw(espacio + 1) << "";
+                }
+                cout << "\n";
+            }
+
+            nivel++;
+            if (nivel > maxNivel + 1) break;
+        }
+
+        cout << endl;
+    }
+
+
+
+
+
     int obtenerAltura() {
         return altura(raiz);
     }
@@ -219,21 +277,27 @@ void menuAVL() {
     int opcion, valor;
 
     do {
-        cout << "\n=== MENU ARBOL AVL ===" << endl;
-        cout << "1. Insertar elemento" << endl;
-        cout << "2. Eliminar elemento" << endl;
-        cout << "3. Buscar elemento" << endl;
-        cout << "4. Mostrar recorrido PreOrden" << endl;
-        cout << "5. Mostrar recorrido InOrden" << endl;
-        cout << "6. Mostrar recorrido PostOrden" << endl;
-        cout << "7. Obtener altura del arbol" << endl;
-        cout << "8. Obtener tamano del arbol" << endl;
-        cout << "9. Verificar balanceo" << endl;
-        cout << "10. Verificar si esta vacio" << endl;
-        cout << "11. Limpiar arbol" << endl;
-        cout << "0. Regresar al menu principal" << endl;
-        cout << "Seleccione una opcion: ";
+        cout << " ___________________________________" << endl;
+        cout << " |       MENU ARBOL AVL            |" << endl;
+        cout << " |_________________________________|" << endl;
+        cout << " | 1. Insertar elemento            | " << endl;
+        cout << " | 2. Eliminar elemento            |" << endl;
+        cout << " | 3. Buscar elemento              |" << endl;
+        cout << " | 4. Mostrar recorrido PreOrden   |" << endl;
+        cout << " | 5. Mostrar recorrido InOrden    |" << endl;
+        cout << " | 6. Mostrar recorrido PostOrden  |" << endl;
+        cout << " | 7. Obtener altura del arbol     |" << endl;
+        cout << " | 8. Obtener tamano del arbol     |" << endl;
+        cout << " | 9. Verificar balanceo           |" << endl;
+        cout << " | 10. Verificar si esta vacio     |" << endl;
+        cout << " | 11. Limpiar arbol               |" << endl;
+        cout << " | 12. Mostrar arbol con ramas     |" << endl;
+        cout << " | 0. Regresar al menu principal   |" << endl;
+        cout << " |_________________________________|" << endl;
+        cout << " |    Seleccione una opcion:       |" << endl;
+        cout << " |_________________________________|" << endl;
         cin >> opcion;
+        system("cls");
 
         switch (opcion) {
         case 1:
@@ -278,6 +342,10 @@ void menuAVL() {
             arbol.limpiar();
             cout << "Arbol limpiado correctamente" << endl;
             break;
+        case 12:
+            arbol.mostrarArbolConRamas();
+            break;
+
         case 0:
             cout << "Regresando al menu principal..." << endl;
             break;
@@ -285,11 +353,13 @@ void menuAVL() {
             cout << "Opcion no valida!" << endl;
         }
     } while (opcion != 0);
-}// holaa 
+}
 int main()
 {
     menuAVL();
 }
+
+
 
 // Ejecutar programa: Ctrl + F5 o menú Depurar > Iniciar sin depurar
 // Depurar programa: F5 o menú Depurar > Iniciar depuración
